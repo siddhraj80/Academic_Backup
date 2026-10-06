@@ -1,6 +1,7 @@
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Scanner;
 
 class Student{
 
@@ -27,30 +28,48 @@ class Student{
 
             FileWriter f1FileWriter = new FileWriter(file1,true);
 
-            System.out.print(file1.length());
-
-            f1FileWriter.append("\n\nRoll No :" + this.rollno + "\t Student Name :" + this.sname  
+            f1FileWriter.append("\nRoll No :" + this.rollno + "\t Student Name :" + this.sname  
                                 + "\t Marks 1 :" + this.marks1 + "\t Marks 2 :" + marks2 
-                                + "\t Marks 3 :" + marks3);
+                                + "\t Marks 3 :" + marks3 + "\n");
 
             
-            System.out.print("File written successfully");
+            System.out.println("\nFile written successfully");
 
             f1FileWriter.close();
 
         }catch(Exception e){
-                e.printStackTrace();
+
+            e.printStackTrace();
         }
     }
 }
 
 
-public class Pro14{
+public class Program14{
     public static void main(String[] args){
 
         Student st = new Student();
         
-        st.setSDetails("Siddhraj", 44, 89, 90, 78);
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Student Name:");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Student Roll no:");
+        int rollno = sc.nextInt();
+
+        System.out.print("Enter Student Marks 1:");
+        float marks1 = sc.nextInt();
+
+        System.out.print("Enter Student Marks 2:");
+        float marks2 = sc.nextInt();
+
+        System.out.print("Enter Student Marks 3:");
+        float marks3 = sc.nextInt();
+
+        st.setSDetails(name, rollno, marks1, marks2, marks3);
         st.filewrite();
+
+        sc.close();
     }
 }

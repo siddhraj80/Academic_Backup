@@ -75,20 +75,21 @@ INSERT INTO Subscription (Cust_Id, Mag_Id, start_date, end_date) VALUES
 
 
 -- 1.
-CREATE  VIEW view1 as 
+CREATE or REPLACE VIEW view1 as 
 	SELECT c.cust_name, m.mag_name, m.unit_rate,s.start_date FROM subscription s
     JOIN customer c ON c.cust_id = s.cust_id
     JOIN magazine m on m.mag_id = s.mag_id
-    WHERE s.start_date BETWEEN '2010-10-01' AND '2011-02-01'
+    WHERE s.start_date BETWEEN '2010-10-01' AND '2011-02-01';
     
-    -- display created view
-    SELECT * FROM view1
+SELECT * FROM view1
 
 
 -- 2.
-SELECT m.mag_name, s.start_date, COUNT(s.mag_id) as highest_sale FROM subscription s
-JOIN magazine m ON m.mag_id = s.mag_id
-WHERE s.start_date BETWEEN CURRENT_DATE - INTERVAL '01' month AND CURRENT_DATE
+SELECT m.mag_name, s.start_date, COUNT(s.mag_id) as highest_sale 
+	FROM subscription s
+	JOIN magazine m ON m.mag_id = s.mag_id
+    
+	WHERE s.start_date BETWEEN CURRENT_DATE - INTERVAL '01' month AND CURRENT_DATE
 GROUP BY s.mag_id 
 
 
@@ -104,7 +105,7 @@ BEGIN
 	JOIN customer c ON c.cust_id = s.cust_id
 	JOIN magazine m ON m.mag_id = s.mag_id
 
-WHERE c.cust_city = "Gandhinagar" AND s.start_date > '2010-08-01' AND m.mag_name = "Outlook";
+    WHERE c.cust_city = "Gandhinagar" AND s.start_date > '2010-08-01' AND m.mag_name = "Outlook";
   RETURN cust_count;
 END; //
 DELIMITER ;
@@ -113,3 +114,29 @@ SELECT func1();
 
 
 -- 4.
+CREATE TABLE customer_log(
+    customer_code int,
+    name varchar(250),
+    sysdate date
+    
+    );
+
+-- trigger
+DELIMITER //
+
+CREATE or REPLACE TRIGGER customer_insert_trigger
+AFTER INSERT ON Customer
+FOR EACH ROW
+BEGIN
+    INSERT INTO customer_log (customer_code,name, sysdate)
+    VALUES (NEW.cust_id, NEW.cust_name, NOW());
+END //
+
+DELIMITER ;
+
+
+--insert into customer
+
+INSERT INTO customer VALUES (601,'abc','abc','abc','abc@gmail.com',1234567890);
+
+SELECT * FROM customer_log

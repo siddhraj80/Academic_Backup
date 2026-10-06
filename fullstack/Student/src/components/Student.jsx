@@ -13,16 +13,20 @@ function Student() {
   
   const [err, setErr] = useState('')
   const [show, setShow] = useState(false);
+  const [showErr, setShowErr] = useState(false);
   const [total, setTotal] = useState(0);
   const [percentage, setPercentage] = useState(0);
 
   const showresult = () => {
 
+    setShow(false);
+    setShowErr(false);
+
     if(mark1 >100 || mark1 < 0 || mark2 > 100 || mark2 < 0 || mark3 > 100 || mark3 < 0 || 
         mark4 > 100 || mark4 < 0 || mark5 > 100 || mark5 < 0){
 
           setErr("Marks should be between 0 and 100");
-          setShow(true);
+          setShowErr(true);
     }else{
 
       const sum = Number(mark1) + Number(mark2) + Number(mark3) + Number(mark4) + Number(mark5);
@@ -61,6 +65,12 @@ function Student() {
             <p className="result-text"><strong>Roll No:</strong> {rollNo}</p>
             <p className="result-text"><strong>Total Marks:</strong> {total} / 500</p>
             <p className="result-text"><strong>Percentage:</strong> {percentage.toFixed(2)}%</p>
+            
+          </div>
+        )}
+
+        {showErr && (
+          <div className="result-box">
             <p>{err}</p>
           </div>
         )}
